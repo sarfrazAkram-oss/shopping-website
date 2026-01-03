@@ -66,10 +66,11 @@
 
 .category-media {
 	background-color: #f2ebe1;
-	padding: 2.5rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	min-height: 220px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .category-body {
@@ -83,4 +84,74 @@
 
 .category-body h2 {
 	font-size: 1.9rem;
+}
+
+.category-media-sneakers {
+	background-image: url("/images/shoes/shoes1.jpg");
+}
+
+.category-media-perfume {
+	background-image: url("/images/perfumes/perfumes.jpeg");
+}
+
+.features {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 2rem;
+	padding: 3rem;
+	background-color: #fdfcfa;
+	border-radius: 28px;
+	box-shadow: 0 18px 38px rgba(173, 158, 135, 0.14);
+}
+
+.feature-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 1rem;
+}
+
+.feature-card h3 {
+	font-size: 1.15rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.feature-card p {
+	max-width: 240px;
+	color: rgba(17, 17, 15, 0.72);
+}
+
+.feature-icon {
+	width: 74px;
+	height: 74px;
+	border-radius: 50%;
+	background-color: #f2ede3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: inset 0 0 0 1px rgba(17, 17, 15, 0.08), 0 10px 24px rgba(173, 158, 135, 0.18);
+}
+
+.feature-icon::before {
+	content: "";
+	display: block;
+	width: 34px;
+	height: 34px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+
+.feature-icon--delivery::before {
+	background-image: url("/window.svg");
+}
+
+.feature-icon--quality::before {
+	background-image: url("/file.svg");
+}
+
+.feature-icon--secure::before {
+	background-image: url("/globe.svg");
 }

@@ -1,94 +1,63 @@
 'use client';
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
-import { catalogItems } from "../data/catalog";
+import { usePathname } from "next/navigation";
 
-function filterCatalog(query) {
-  const normalized = query.trim().toLowerCase();
-  if (!normalized) {
-    return [];
-  }
-  return catalogItems.filter((item) => {
-    const haystack = `${item.name} ${item.category}`.toLowerCase();
-    return haystack.includes(normalized);
-  });
-}
+const primaryLinks = [
+  { href: "/", label: "Home" },
+  { href: "/sneakers", label: "Sneakers" },
+  { href: "/perfumes", label: "Perfumes" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
 
 export default function Navbar() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [hasSearched, setHasSearched] = useState(false);
+  const pathname = usePathname();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const matches = filterCatalog(query);
-    setResults(matches);
-    setHasSearched(true);
+  const resolveActive = (href) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  const resultLabel = useMemo(() => {
-    if (!hasSearched) {
-      return "";
-    }
-    if (results.length === 0) {
-      return "No results found";
-    }
-    return `${results.length} result${results.length > 1 ? "s" : ""} found`;
-  }, [hasSearched, results]);
-
   return (
-    <header className="navbar" role="banner">
-      <div className="navbar-inner">
-        <div className="navbar-start">
-          <div className="navbar-logo">SHOESCO.</div>
-          <div className="navbar-search">
-            <form className="search-form" onSubmit={handleSubmit} role="search">
-              <label className="sr-only" htmlFor="navbar-search-input">
-                Search products
-              </label>
-              <input
-                id="navbar-search-input"
-                className="search-input"
-                type="search"
-                placeholder="Search sneakers or perfumes"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                aria-label="Search products"
-              />
-              <button type="submit" className="search-button" aria-label="Submit search">
-                <span className="search-icon" aria-hidden="true" />
-              </button>
-            </form>
-            {hasSearched && (
-              <div className="search-results" role="listbox" aria-live="polite">
-                {resultLabel && <div className="results-label">{resultLabel}</div>}
-                {results.length === 0 ? (
-                  <p className="results-empty">No results found</p>
-                ) : (
-                  <ul>
-                    {results.map((item) => (
-                      <li key={item.name} role="option">
-                        <span className="result-name">{item.name}</span>
-                        <span className="result-meta">{item.category}</span>
-                        <span className="result-price">{item.price}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-          </div>
+    <header className="site-navbar" role="banner">
+      <div className="site-navbar__inner">
+        <div className="site-navbar__brand" aria-label="SHOESCO brand">
+          <Link href="/">SHOESCO.</Link>
         </div>
-        <nav className="navbar-links" aria-label="Primary">
-          <Link href="/">Home</Link>
-          <Link href="/sneakers">Sneakers</Link>
-          <Link href="/perfumes">Perfumes</Link>
-          <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
+        <nav className="site-navbar__nav" aria-label="Primary">
+          {primaryLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={resolveActive(href) ? "site-navbar__link is-active" : "site-navbar__link"}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
-        <div className="navbar-mark" aria-label="Temporary logo">
-          <img src="/images/temp-logo.png" alt="Temporary SHOESCO logo" />
+        <div className="site-navbar__cart" aria-label="View cart">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M6.75 6h14.313l-1.512 8.437A2 2 0 0 1 17.585 16H9.631a2 2 0 0 1-1.962-1.648L6.75 6Zm0 0L5.5 2.75H2"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+            <circle cx="10.25" cy="19.5" r="1.25" stroke="currentColor" strokeWidth="1.4" fill="none" />
+            <circle cx="17.75" cy="19.5" r="1.25" stroke="currentColor" strokeWidth="1.4" fill="none" />
+          </svg>
         </div>
       </div>
     </header>

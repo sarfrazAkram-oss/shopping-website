@@ -17,21 +17,18 @@
 	align-items: center;
 	justify-content: center;
 	padding: 2.5rem;
+	background: radial-gradient(circle at 50% 50%, rgba(250, 244, 235, 0.92), rgba(242, 232, 219, 0.8));
+	overflow: hidden;
 }
 
 .hero-panel-left {
 	justify-content: flex-end;
+	background: radial-gradient(circle at 30% 50%, rgba(249, 238, 225, 0.95), rgba(235, 222, 205, 0.7));
 }
 
 .hero-panel-right {
 	justify-content: flex-start;
-}
-
-.hero-image {
-	max-width: 520px;
-	width: 100%;
-	height: auto;
-	object-fit: contain;
+	background: radial-gradient(circle at 70% 50%, rgba(249, 238, 225, 0.95), rgba(235, 222, 205, 0.7));
 }
 
 .hero-content {
@@ -44,7 +41,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1.5rem;
-	padding: 1rem;
+	padding: 2rem;
 	z-index: 2;
 }
 
@@ -54,13 +51,33 @@
 }
 
 .hero-content p {
-	font-size: 1rem;
-	color: #3a362f;
+	color: rgba(17, 17, 15, 0.72);
+	font-size: 1.05rem;
 }
 
 .hero-actions {
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	gap: 1rem;
+	gap: 1.1rem;
 }
+
+.hero-panel::before {
+	content: "";
+	position: relative;
+	display: block;
+	width: 420px;
+	height: 420px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	filter: drop-shadow(0 32px 46px rgba(72, 60, 46, 0.26));
+}
+
+.hero-panel-left::before {
+	background-image: url("/images/shoes/shoes2.jfif");
+}
+
+.hero-panel-right::before {
+	background-image: url("/images/perfumes/perfume4.webp");
+}
+

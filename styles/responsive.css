@@ -6,6 +6,11 @@
 	.page-wrapper {
 		padding: 112px 2rem 3.5rem;
 	}
+
+	.hero-panel::before {
+		width: 320px;
+		height: 320px;
+	}
 }
 
 @media (max-width: 1024px) {
@@ -80,6 +85,11 @@
 		margin-top: -2rem;
 	}
 
+	.hero-panel::before {
+		width: 260px;
+		height: 260px;
+	}
+
 	.hero-actions {
 		flex-direction: column;
 	}
@@ -110,6 +120,11 @@
 
 	.hero-content h1 {
 		font-size: 2.2rem;
+	}
+
+	.hero-panel::before {
+		width: 220px;
+		height: 220px;
 	}
 
 	.product-grid {

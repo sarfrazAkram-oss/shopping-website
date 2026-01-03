@@ -3,9 +3,10 @@ import "../styles/navbar.css";
 import "../styles/hero.css";
 import "../styles/sections.css";
 import "../styles/products.css";
-import "../styles/footer.css";
 import "../styles/responsive.css";
 import Navbar from "../components/Navbar";
+import "../styles/footer.css";
+import Footer from "../components/Footer";
 
 export const metadata = {
   title: "SHOESCO.",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       <body>
         <Navbar />
         <div className="page-wrapper">{children}</div>
+        <Footer />
       </body>
     </html>
   );
