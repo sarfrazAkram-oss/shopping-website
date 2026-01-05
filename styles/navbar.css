@@ -67,7 +67,13 @@
 	background: #1c1a17;
 }
 
-.site-navbar__cart {
+.site-navbar__actions {
+	display: flex;
+	align-items: center;
+	gap: 0.8rem;
+}
+
+.site-navbar__icon {
 	width: 46px;
 	height: 46px;
 	display: flex;
@@ -79,13 +85,13 @@
 	transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.site-navbar__cart:hover,
-.site-navbar__cart:focus-visible {
+.site-navbar__icon:hover,
+.site-navbar__icon:focus-visible {
 	background-color: rgba(28, 26, 23, 0.08);
 	border-color: rgba(28, 26, 23, 0.8);
 }
 
-.site-navbar__cart svg {
+.site-navbar__icon svg {
 	width: 22px;
 	height: 22px;
 }

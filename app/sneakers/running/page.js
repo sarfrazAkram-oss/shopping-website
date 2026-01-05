@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "../../../styles/sneakers.css";
+import AddToCartButton from "../../../components/AddToCartButton";
 
 const filterLinks = [
   { href: "/sneakers", label: "All" },
@@ -48,7 +49,14 @@ function ProductCard({ product }) {
       <div className="sneaker-card__body">
         <h3>{product.name}</h3>
         <p className="sneaker-card__price">{product.price}</p>
-        <button type="button" className="sneaker-card__cta">Add to Cart</button>
+        <AddToCartButton
+          product={product}
+          className="sneaker-card__cta"
+          fallbackImage="/images/shoes/backgroud_pictures/running1.jfif"
+          source="sneakers-running"
+        >
+          Add to Cart
+        </AddToCartButton>
       </div>
     </article>
   );

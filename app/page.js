@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AddToCartButton from "../components/AddToCartButton";
 
 const trendingProducts = [
   { name: "AirFly Prime", price: "$140", image: "/images/shoes/shoes1.jpg", action: "Add to Cart" },
@@ -89,9 +90,19 @@ export default function HomePage() {
               <div className="product-body">
                 <h3>{product.name}</h3>
                 <p className="product-price">{product.price}</p>
-                <button type="button" className="btn btn-dark">
-                  {product.action}
-                </button>
+                {product.action === "Add to Cart" ? (
+                  <AddToCartButton
+                    product={product}
+                    className="btn btn-dark"
+                    source="home"
+                  >
+                    Add to Cart
+                  </AddToCartButton>
+                ) : (
+                  <button type="button" className="btn btn-dark">
+                    {product.action}
+                  </button>
+                )}
               </div>
             </article>
           ))}

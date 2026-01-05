@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "../../styles/sneakers.css";
+import AddToCartButton from "../../components/AddToCartButton";
 
 const topProducts = [
   { name: "AirFly Pro", price: "$130" },
@@ -34,6 +35,8 @@ const filterLinks = [
   { href: "/sneakers/running", label: "Running" },
   { href: "/sneakers/casual", label: "Casual" },
 ];
+
+const defaultSneakerImage = "/images/shoes/shoes4.jfif";
 
 export default function SneakersPage() {
   return (
@@ -72,7 +75,14 @@ export default function SneakersPage() {
               <div className="sneaker-card__body">
                 <h3>{product.name}</h3>
                 <p className="sneaker-card__price">{product.price}</p>
-                <button type="button" className="sneaker-card__cta">Add to Cart</button>
+                <AddToCartButton
+                  product={product}
+                  className="sneaker-card__cta"
+                  fallbackImage={defaultSneakerImage}
+                  source="sneakers-top"
+                >
+                  Add to Cart
+                </AddToCartButton>
               </div>
             </article>
           ))}
@@ -104,7 +114,14 @@ export default function SneakersPage() {
               <div className="sneaker-card__body">
                 <h3>{product.name}</h3>
                 <p className="sneaker-card__price">{product.price}</p>
-                <button type="button" className="sneaker-card__cta">Add to Cart</button>
+                <AddToCartButton
+                  product={product}
+                  className="sneaker-card__cta"
+                  fallbackImage={defaultSneakerImage}
+                  source="sneakers-best"
+                >
+                  Add to Cart
+                </AddToCartButton>
               </div>
             </article>
           ))}

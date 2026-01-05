@@ -1,4 +1,5 @@
 import "../../styles/perfumes.css";
+import AddToCartButton from "../../components/AddToCartButton";
 
 const topProducts = [
   { name: "Rosani Intense", price: "$150", image: "/images/perfumes/perfume4.webp" },
@@ -27,7 +28,14 @@ function ProductCard({ product }) {
       <div className="perfume-card__body">
         <h3>{product.name}</h3>
         <p className="perfume-card__price">{product.price}</p>
-        <button type="button" className="perfume-card__cta">Add to Cart</button>
+        <AddToCartButton
+          product={product}
+          className="perfume-card__cta"
+          fallbackImage="/images/perfumes/perfume5.jfif"
+          source="perfumes"
+        >
+          Add to Cart
+        </AddToCartButton>
       </div>
     </article>
   );

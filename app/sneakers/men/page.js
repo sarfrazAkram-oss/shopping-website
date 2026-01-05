@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "../../../styles/sneakers.css";
+import AddToCartButton from "../../../components/AddToCartButton";
 
 const filterLinks = [
   { href: "/sneakers", label: "All" },
@@ -48,7 +49,14 @@ function ProductCard({ product }) {
       <div className="sneaker-card__body">
         <h3>{product.name}</h3>
         <p className="sneaker-card__price">{product.price}</p>
-        <button type="button" className="sneaker-card__cta">Add to Cart</button>
+        <AddToCartButton
+          product={product}
+          className="sneaker-card__cta"
+          fallbackImage="/images/shoes/shoes4.jfif"
+          source="sneakers-men"
+        >
+          Add to Cart
+        </AddToCartButton>
       </div>
     </article>
   );
@@ -59,14 +67,14 @@ export default function MenSneakersPage() {
     <main className="sneakers-page">
       <section className="sneaker-hero sneaker-hero--men">
         <div className="sneaker-hero__content">
-          <span className="sneaker-hero__eyebrow">Men's Collection</span>
+          <span className="sneaker-hero__eyebrow">Men&apos;s Collection</span>
           <h1>Men&apos;s Sneakers Collection</h1>
           <p>Tailored performance aur refined aesthetics jo har men&apos;s wardrobe ko elevate karein.</p>
           <button className="sneaker-hero__cta" type="button">Shop Men&apos;s</button>
         </div>
         <div className="sneaker-hero__visual">
           <div className="sneaker-hero__image-frame">
-            <img src="/images/shoes/backgroud_pictures/men2.jfif" alt="Men's premium sneaker" />
+            <img src="/images/shoes/backgroud_pictures/men2.jfif" alt="Men&apos;s premium sneaker" />
           </div>
         </div>
       </section>
