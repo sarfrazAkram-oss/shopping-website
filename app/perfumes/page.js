@@ -1,5 +1,5 @@
 import "../../styles/perfumes.css";
-import AddToCartButton from "../../components/AddToCartButton";
+import ProductCard from "../../components/ProductCard";
 
 const topProducts = [
   { name: "Rosani Intense", price: "$150", image: "/images/perfumes/perfume4.webp" },
@@ -19,28 +19,6 @@ const bestSellers = [
   { name: "Dusky Reverie", price: "$174", image: "/images/perfumes/perfume5.jfif" },
 ];
 
-function ProductCard({ product }) {
-  return (
-    <article className="perfume-card">
-      <div className="perfume-card__image" aria-hidden="true">
-        <img src={product.image} alt="" />
-      </div>
-      <div className="perfume-card__body">
-        <h3>{product.name}</h3>
-        <p className="perfume-card__price">{product.price}</p>
-        <AddToCartButton
-          product={product}
-          className="perfume-card__cta"
-          fallbackImage="/images/perfumes/perfume5.jfif"
-          source="perfumes"
-        >
-          Add to Cart
-        </AddToCartButton>
-      </div>
-    </article>
-  );
-}
-
 export default function PerfumesPage() {
   return (
     <main className="perfumes-page">
@@ -49,7 +27,7 @@ export default function PerfumesPage() {
           <span className="perfume-hero__eyebrow">Luxury Fragrances</span>
           <h1 className="perfume-hero__title">Exquisite Scents for Sophisticated Tastes.</h1>
           <p className="perfume-hero__description">Apni personality ko Rosani ke luxury perfumes ke zariye behtareen tareeke se zahir karein.</p>
-          <button className="perfume-hero__cta" type="button">Shop Perfumes</button>
+          <button className="btn btn-dark" type="button">Shop Perfumes</button>
         </div>
         <div className="perfume-hero__visual">
           <div className="perfume-hero__image-frame">
@@ -64,9 +42,15 @@ export default function PerfumesPage() {
           <h2>Top Products</h2>
           <p>Curated premium releases jo har collection ko elevate karein aur lasting impression chhod dein.</p>
         </div>
-        <div className="perfume-grid">
+        <div className="product-grid">
           {topProducts.map((product) => (
-            <ProductCard key={product.name} product={product} />
+            <ProductCard
+              key={product.name}
+              product={product}
+              fallbackImage="/images/perfumes/perfume5.jfif"
+              action={{ type: "cart", label: "Add to Cart" }}
+              source="perfumes-top"
+            />
           ))}
         </div>
       </section>
@@ -75,7 +59,7 @@ export default function PerfumesPage() {
         <div className="perfume-explore__copy">
           <h2>Explore Our Collection of Luxury Perfumes</h2>
           <p>Indulge in sophistication with signature blends jo timeless elegance ko capture karein.</p>
-          <button type="button" className="perfume-explore__cta">Explore Collection</button>
+          <button type="button" className="btn btn-dark">Explore Collection</button>
         </div>
         <div className="perfume-explore__visual">
           <div className="perfume-explore__image-frame">
@@ -90,9 +74,15 @@ export default function PerfumesPage() {
           <h2>Best Sellers</h2>
           <p>Customer favorites jinhe perfume connoisseurs baar-baar choose karte hain.</p>
         </div>
-        <div className="perfume-grid perfume-grid--dense">
+        <div className="product-grid">
           {bestSellers.map((product) => (
-            <ProductCard key={product.name} product={product} />
+            <ProductCard
+              key={product.name}
+              product={product}
+              fallbackImage="/images/perfumes/perfume5.jfif"
+              action={{ type: "cart", label: "Add to Cart" }}
+              source="perfumes-best"
+            />
           ))}
         </div>
       </section>

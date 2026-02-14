@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import "../../../styles/sneakers.css";
+import ProductCard from "../../../components/ProductCard";
 
 const categoryConfigs = {
   men: {
@@ -133,7 +134,7 @@ export default function CategoryPage({ params }) {
           <span className="sneaker-hero__eyebrow">{config.eyebrow}</span>
           <h1>{config.heading}</h1>
           <p>{config.description}</p>
-          <button className="sneaker-hero__cta" type="button">{config.cta}</button>
+          <button className="btn btn-dark" type="button">{config.cta}</button>
         </div>
         <div className="sneaker-hero__visual">
           <div className="sneaker-hero__image-frame">
@@ -155,16 +156,15 @@ export default function CategoryPage({ params }) {
           <h2>{config.gridTitle}</h2>
           <p>{config.gridDescription}</p>
         </div>
-        <div className="sneaker-grid">
+        <div className="product-grid">
           {config.products.map((product) => (
-            <article key={product.name} className="sneaker-card">
-              <div className="sneaker-card__image" aria-hidden="true">Image Placeholder</div>
-              <div className="sneaker-card__body">
-                <h3>{product.name}</h3>
-                <p className="sneaker-card__price">{product.price}</p>
-                <button type="button" className="sneaker-card__cta">Add to Cart</button>
-              </div>
-            </article>
+            <ProductCard
+              key={product.name}
+              product={{ ...product, image: config.heroImage }}
+              fallbackImage={config.heroImage}
+              action={{ type: "cart", label: "Add to Cart" }}
+              source={`sneakers-${category}`}
+            />
           ))}
         </div>
       </section>

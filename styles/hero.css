@@ -1,4 +1,5 @@
 .hero {
+	position: relative;
 	background: linear-gradient(90deg, #f3eee4 0%, #f3eee4 50%, #f0e8db 50%, #f0e8db 100%);
 	border-radius: 32px;
 	overflow: hidden;
@@ -7,28 +8,44 @@
 .hero-layout {
 	position: relative;
 	display: flex;
+	width: 100%;
 	min-height: 540px;
 }
 
 .hero-panel {
 	position: relative;
-	flex: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 2.5rem;
-	background: radial-gradient(circle at 50% 50%, rgba(250, 244, 235, 0.92), rgba(242, 232, 219, 0.8));
+	flex: 1 1 50%;
+	min-height: 540px;
+	background-color: #f3eee4;
 	overflow: hidden;
 }
 
-.hero-panel-left {
-	justify-content: flex-end;
-	background: radial-gradient(circle at 30% 50%, rgba(249, 238, 225, 0.95), rgba(235, 222, 205, 0.7));
+.hero-panel::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 50% 50%, rgba(250, 244, 235, 0.32), rgba(242, 232, 219, 0.62));
+	pointer-events: none;
+	z-index: 1;
 }
 
-.hero-panel-right {
-	justify-content: flex-start;
-	background: radial-gradient(circle at 70% 50%, rgba(249, 238, 225, 0.95), rgba(235, 222, 205, 0.7));
+.hero-panel-left::after {
+	background: radial-gradient(circle at 30% 50%, rgba(249, 238, 225, 0.5), rgba(235, 222, 205, 0.64));
+}
+
+.hero-panel-right::after {
+	background: radial-gradient(circle at 70% 50%, rgba(249, 238, 225, 0.5), rgba(235, 222, 205, 0.64));
+}
+
+.hero-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+	z-index: 0;
 }
 
 .hero-content {
@@ -36,12 +53,13 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	max-width: 480px;
+	width: 100%;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	gap: 1.5rem;
-	padding: 2rem;
+	padding: 0 3rem;
 	z-index: 2;
 }
 
@@ -59,25 +77,5 @@
 	display: flex;
 	justify-content: center;
 	gap: 1.1rem;
-}
-
-.hero-panel::before {
-	content: "";
-	position: relative;
-	display: block;
-	width: 420px;
-	height: 420px;
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
-	filter: drop-shadow(0 32px 46px rgba(72, 60, 46, 0.26));
-}
-
-.hero-panel-left::before {
-	background-image: url("/images/shoes/shoes2.jfif");
-}
-
-.hero-panel-right::before {
-	background-image: url("/images/perfumes/perfume4.webp");
 }
 

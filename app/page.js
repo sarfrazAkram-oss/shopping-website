@@ -1,19 +1,19 @@
 import Link from "next/link";
-import AddToCartButton from "../components/AddToCartButton";
+import ProductCard from "../components/ProductCard";
 
 const trendingProducts = [
-  { name: "AirFly Prime", price: "$140", image: "/images/shoes/shoes1.jpg", action: "Add to Cart" },
-  { name: "Miraj Noir", price: "$195", image: "/images/perfumes/perfume5.jfif", action: "Shop Now" },
-  { name: "Urban Stride", price: "$155", image: "/images/shoes/shoes2.jfif", action: "Add to Cart" },
-  { name: "Rosani Blush", price: "$205", image: "/images/perfumes/perfume4.webp", action: "Shop Now" },
-  { name: "Velocity Edge", price: "$162", image: "/images/shoes/shoes4.jfif", action: "Add to Cart" },
-  { name: "Golden Aura", price: "$182", image: "/images/perfumes/perfume5.jfif", action: "Add to Cart" },
-  { name: "Metro Glide", price: "$150", image: "/images/shoes/backgroud_pictures/men1.jpg", action: "Add to Cart" },
-  { name: "Ivory Musk", price: "$188", image: "/images/perfumes/perfumes.jpeg", action: "Shop Now" },
-  { name: "Trail Luxe", price: "$158", image: "/images/shoes/backgroud_pictures/women2.jfif", action: "Add to Cart" },
-  { name: "Saffron Veil", price: "$176", image: "/images/perfumes/perfume4.webp", action: "Add to Cart" },
-  { name: "Pulse Runner", price: "$168", image: "/images/shoes/backgroud_pictures/running1.jfif", action: "Add to Cart" },
-  { name: "Velvet Oud", price: "$210", image: "/images/perfumes/perfume5.jfif", action: "Shop Now" },
+  { name: "AirFly Prime", price: "$140", image: "/images/shoes/shoes1.jpg", action: "Add to Cart", category: "sneakers" },
+  { name: "Miraj Noir", price: "$195", image: "/images/perfumes/perfume5.jfif", action: "Shop Now", category: "perfumes" },
+  { name: "Urban Stride", price: "$155", image: "/images/shoes/shoes2.jfif", action: "Add to Cart", category: "sneakers" },
+  { name: "Rosani Blush", price: "$205", image: "/images/perfumes/perfume4.webp", action: "Shop Now", category: "perfumes" },
+  { name: "Velocity Edge", price: "$162", image: "/images/shoes/shoes4.jfif", action: "Add to Cart", category: "sneakers" },
+  { name: "Golden Aura", price: "$182", image: "/images/perfumes/perfume5.jfif", action: "Add to Cart", category: "perfumes" },
+  { name: "Metro Glide", price: "$150", image: "/images/shoes/backgroud_pictures/men1.jpg", action: "Add to Cart", category: "sneakers" },
+  { name: "Ivory Musk", price: "$188", image: "/images/perfumes/perfumes.jpeg", action: "Shop Now", category: "perfumes" },
+  { name: "Trail Luxe", price: "$158", image: "/images/shoes/backgroud_pictures/women2.jfif", action: "Add to Cart", category: "sneakers" },
+  { name: "Saffron Veil", price: "$176", image: "/images/perfumes/perfume4.webp", action: "Add to Cart", category: "perfumes" },
+  { name: "Pulse Runner", price: "$168", image: "/images/shoes/backgroud_pictures/running1.jfif", action: "Add to Cart", category: "sneakers" },
+  { name: "Velvet Oud", price: "$210", image: "/images/perfumes/perfume5.jfif", action: "Shop Now", category: "perfumes" },
 ];
 
 export default function HomePage() {
@@ -21,22 +21,24 @@ export default function HomePage() {
     <main className="home">
       <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-layout">
-          <div
-            className="hero-panel hero-panel-left"
-            role="img"
-            aria-label="Premium sneaker showcased on a neutral background"
-          />
-          <div
-            className="hero-panel hero-panel-right"
-            role="img"
-            aria-label="Luxury perfume bottle displayed on a warm backdrop"
-          />
+          <div className="hero-panel hero-panel-left">
+            <img
+              src="/images/shoes/shoes2.jfif"
+              alt="Premium sneaker showcased on a neutral background"
+              className="hero-image"
+              loading="lazy"
+            />
+          </div>
+          <div className="hero-panel hero-panel-right">
+            <img
+              src="/images/perfumes/perfume4.webp"
+              alt="Luxury perfume bottle displayed on a warm backdrop"
+              className="hero-image"
+              loading="lazy"
+            />
+          </div>
           <div className="hero-content">
-            <h1 id="hero-heading">
-              Premium Sneakers &
-              <br />
-              Luxury Fragrances.
-            </h1>
+            <h1 id="hero-heading">Premium Sneakers & Luxury Fragrances</h1>
             <p>Style jo ap ki personality ko complete kare.</p>
             <div className="hero-actions">
               <Link href="/sneakers" className="btn btn-dark">
@@ -83,28 +85,21 @@ export default function HomePage() {
         <h2 id="trending-heading">Trending Now</h2>
         <div className="product-grid">
           {trendingProducts.map((product) => (
-            <article className="product-card" key={product.name}>
-              <div className="product-media">
-                <img src={product.image} alt={product.name} />
-              </div>
-              <div className="product-body">
-                <h3>{product.name}</h3>
-                <p className="product-price">{product.price}</p>
-                {product.action === "Add to Cart" ? (
-                  <AddToCartButton
-                    product={product}
-                    className="btn btn-dark"
-                    source="home"
-                  >
-                    Add to Cart
-                  </AddToCartButton>
-                ) : (
-                  <button type="button" className="btn btn-dark">
-                    {product.action}
-                  </button>
-                )}
-              </div>
-            </article>
+            <ProductCard
+              key={product.name}
+              product={product}
+              action={
+                product.action === "Add to Cart"
+                  ? { type: "cart", label: "Add to Cart" }
+                  : {
+                      type: "link",
+                      label: product.action,
+                      href: product.category === "perfumes" ? "/perfumes" : "/sneakers",
+                    }
+              }
+              fallbackImage={product.image}
+              source="home-trending"
+            />
           ))}
         </div>
       </section>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import "../../styles/sneakers.css";
-import AddToCartButton from "../../components/AddToCartButton";
+import ProductCard from "../../components/ProductCard";
 
 const topProducts = [
   { name: "AirFly Pro", price: "$130" },
@@ -46,7 +46,7 @@ export default function SneakersPage() {
           <span className="sneaker-hero__eyebrow">Sneaker Boutique</span>
           <h1>Premium Sneakers for Every Style.</h1>
           <p>Apni style aur comfort ko upgrade karein latest premium sneakers ke sath.</p>
-          <button className="sneaker-hero__cta" type="button">Shop Sneakers</button>
+          <button className="btn btn-dark" type="button">Shop Sneakers</button>
         </div>
         <div className="sneaker-hero__visual">
           <div className="sneaker-hero__image-frame">
@@ -68,24 +68,19 @@ export default function SneakersPage() {
           <h2>Top Products</h2>
           <p>Curated premium releases jo har wardrobe ko elevate karein.</p>
         </div>
-        <div className="sneaker-grid">
-          {topProducts.map((product) => (
-            <article key={product.name} className="sneaker-card">
-              <div className="sneaker-card__image" aria-hidden="true">Image Placeholder</div>
-              <div className="sneaker-card__body">
-                <h3>{product.name}</h3>
-                <p className="sneaker-card__price">{product.price}</p>
-                <AddToCartButton
-                  product={product}
-                  className="sneaker-card__cta"
-                  fallbackImage={defaultSneakerImage}
-                  source="sneakers-top"
-                >
-                  Add to Cart
-                </AddToCartButton>
-              </div>
-            </article>
-          ))}
+        <div className="product-grid">
+          {topProducts.map((product) => {
+            const detailedProduct = { ...product, image: product.image || defaultSneakerImage };
+            return (
+              <ProductCard
+                key={product.name}
+                product={detailedProduct}
+                fallbackImage={defaultSneakerImage}
+                action={{ type: "cart", label: "Add to Cart" }}
+                source="sneakers-top"
+              />
+            );
+          })}
         </div>
       </section>
 
@@ -93,7 +88,7 @@ export default function SneakersPage() {
         <div className="sneaker-explore__copy">
           <h2>Explore Our Collection of Premium Sneakers</h2>
           <p>Designer silhouettes, engineered comfort aur luxe materials ke sath har occasion ke liye perfect pair.</p>
-          <button type="button" className="sneaker-explore__cta">Explore Collection</button>
+          <button type="button" className="btn btn-dark">Explore Collection</button>
         </div>
         <div className="sneaker-explore__visual">
           <div className="sneaker-explore__image-frame">
@@ -107,24 +102,19 @@ export default function SneakersPage() {
           <h2>Best Sellers</h2>
           <p>Customer favorites jo hamesha sold-out ke kareeb rehte hain.</p>
         </div>
-        <div className="sneaker-grid sneaker-grid--dense">
-          {bestSellers.map((product) => (
-            <article key={product.name} className="sneaker-card">
-              <div className="sneaker-card__image" aria-hidden="true">Image Placeholder</div>
-              <div className="sneaker-card__body">
-                <h3>{product.name}</h3>
-                <p className="sneaker-card__price">{product.price}</p>
-                <AddToCartButton
-                  product={product}
-                  className="sneaker-card__cta"
-                  fallbackImage={defaultSneakerImage}
-                  source="sneakers-best"
-                >
-                  Add to Cart
-                </AddToCartButton>
-              </div>
-            </article>
-          ))}
+        <div className="product-grid">
+          {bestSellers.map((product) => {
+            const detailedProduct = { ...product, image: product.image || defaultSneakerImage };
+            return (
+              <ProductCard
+                key={product.name}
+                product={detailedProduct}
+                fallbackImage={defaultSneakerImage}
+                action={{ type: "cart", label: "Add to Cart" }}
+                source="sneakers-best"
+              />
+            );
+          })}
         </div>
       </section>
     </main>

@@ -10,10 +10,17 @@ body {
   padding: 0;
 }
 
+:root {
+  --color-page: #f4eee4;
+  --color-ink: #1e1a15;
+  --color-muted: rgba(30, 25, 21, 0.68);
+  --color-subtle: rgba(30, 25, 21, 0.46);
+}
+
 body {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  color: #201e1a;
-  background-color: #f5efe6;
+  color: var(--color-ink);
+  background-color: var(--color-page);
 }
 
 h1,
@@ -48,8 +55,8 @@ html {
 }
 
 body {
-  background-color: #f4f0e6;
-  color: #1f1d1a;
+  background-color: var(--color-page);
+  color: var(--color-ink);
   font-family: "Helvetica Neue", Arial, sans-serif;
   line-height: 1.6;
 }
