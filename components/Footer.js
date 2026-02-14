@@ -76,22 +76,22 @@ const socialLinks = [
 
 const footerColumns = [
   {
-    title: "Information About",
-    links: ["About Us", "Our Ecosystem", "3U1M Program", "Scholarship Program"],
+    title: "Shopping Information",
+    links: ["About Us", "Shipping & Delivery", "Return Policy", "FAQ"],
   },
   {
-    title: "Customer Services",
+    title: "Buy By Category",
     links: [
-      "Prospective Undergraduates",
-      "Prospective Postgraduates",
-      "Alumni",
-      "International Students",
-      "International Partnerships",
+      "Sneakers",
+      "Slippers",
+      "Perfumes",
+      "Sales & Offers",
+      "Gift Cards",
     ],
   },
   {
-    title: "Quick Links",
-    links: ["Get in Touch", "Careers", "Research Week 2024", "HR Department", "The Campus Shop"],
+    title: "Customer Support",
+    links: ["Contact Us", "Track My Order", "Order Status", "Size Guide", ],
   },
 ];
 
@@ -154,7 +154,7 @@ const paymentLogos = [
 
 const contactDetails = [
   {
-    label: "+923001234567",
+    label: "+923011315355",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M6.62 10.79a15 15 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.58.57 1 1 0 0 1 1 1v3.51a1 1 0 0 1-1 1 17 17 0 0 1-17-17 1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.58 1 1 0 0 1-.25 1z" fill="currentColor" />

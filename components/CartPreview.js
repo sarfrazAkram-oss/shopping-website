@@ -33,6 +33,13 @@ export default function CartPreview() {
                 </div>
                 <div className="cart-preview__details">
                   <span className="cart-preview__name">{item.name}</span>
+                  {item.selectedSize || item.selectedColor ? (
+                    <span className="cart-preview__meta">
+                      {item.selectedSize ? `Size ${item.selectedSize}` : ""}
+                      {item.selectedSize && item.selectedColor ? " • " : ""}
+                      {item.selectedColor ? `Color ${item.selectedColor}` : ""}
+                    </span>
+                  ) : null}
                   <span className="cart-preview__meta">
                     {item.quantity} x {formatPrice(item.price)}
                   </span>

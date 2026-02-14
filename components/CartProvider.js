@@ -1,11 +1,13 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useReducer, useCallback } from "react";
+import { createContext, useContext, useEffect, useMemo, useReducer, useCallback, useState } from "react";
 
 const CartContext = createContext(null);
 
 const CART_STORAGE_KEY = "shoesco.cart.v1";
 const ORDER_STATE_STORAGE_KEY = "shoesco.orderState.v1";
+const VISITOR_ID_STORAGE_KEY = "shoesco.visitorId.v1";
+const OWNER_ID = "OWNER_ID";
 const DELIVERY_MESSAGE = "Your order will be delivered within 7 days";
 
 const initialState = {
@@ -80,6 +82,7 @@ function normalizeOrderRecord(raw) {
 
   return {
     id: raw.id || `order-${createdAt}`,
+    customerVisitorId: raw.customerVisitorId || null,
     customer: {
       name: raw.customer?.name ?? "",
       phone: raw.customer?.phone ?? "",
@@ -97,7 +100,7 @@ function normalizeOrderRecord(raw) {
   };
 }
 
-function createOrderRecord(draft, existingIds, nextSequence) {
+function createOrderRecord(draft, existingIds, nextSequence, customerVisitorId) {
   const timestamp = new Date();
   const baseId = draft.id && !existingIds.has(draft.id) ? draft.id : `order-${timestamp.getTime()}`;
   const iso = timestamp.toISOString();
@@ -124,6 +127,7 @@ function createOrderRecord(draft, existingIds, nextSequence) {
 
   return {
     id: baseId,
+    customerVisitorId: customerVisitorId || null,
     customer: {
       name: draft.customer?.name ?? "",
       phone: draft.customer?.phone ?? "",
@@ -152,8 +156,10 @@ function createOwnerNotification(order) {
     id: `owner-${order.id}-${order.createdAt}`,
     orderId: order.id,
     orderReference: order.reference,
+    customerVisitorId: order.customerVisitorId || null,
     type: "new-order",
     message: `${order.reference || "New order"} received`,
+    timestamp: order.createdAt,
     createdAt: order.createdAt,
     status: "unread",
   };
@@ -165,11 +171,41 @@ function createCustomerDeliveryNotification(order) {
     id: `customer-${order.id}-${timestamp}`,
     orderId: order.id,
     orderReference: order.reference,
+    customerVisitorId: order.customerVisitorId || null,
     type: "delivered",
     message: `${order.reference || "Your order"} has been delivered successfully. Please enjoy!`,
+    timestamp,
     createdAt: timestamp,
     status: "unread",
   };
+}
+
+function generateVisitorId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `visitor-${crypto.randomUUID()}`;
+  }
+  return `visitor-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function resolveVisitorId() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const isOwnerPath = window.location.pathname.startsWith("/admin");
+  if (isOwnerPath) {
+    localStorage.setItem(VISITOR_ID_STORAGE_KEY, OWNER_ID);
+    return OWNER_ID;
+  }
+
+  const storedVisitorId = localStorage.getItem(VISITOR_ID_STORAGE_KEY);
+  if (storedVisitorId && storedVisitorId.trim()) {
+    return storedVisitorId;
+  }
+
+  const nextVisitorId = generateVisitorId();
+  localStorage.setItem(VISITOR_ID_STORAGE_KEY, nextVisitorId);
+  return nextVisitorId;
 }
 
 function cartReducer(state, action) {
@@ -352,6 +388,16 @@ function persistOrderState(orderState) {
 
 export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [currentVisitorId, setCurrentVisitorId] = useState(null);
+
+  useEffect(() => {
+    try {
+      const visitorId = resolveVisitorId();
+      setCurrentVisitorId(visitorId);
+    } catch (error) {
+      console.error("Failed to resolve visitor id", error);
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -404,14 +450,32 @@ export function CartProvider({ children }) {
       const hydratedOwnerNotifications = Array.isArray(parsedOrderState.ownerNotifications)
         ? parsedOrderState.ownerNotifications.map((notification) => {
             const reference = notification.orderReference || orderReferenceMap.get(notification.orderId);
-            return reference ? { ...notification, orderReference: reference } : notification;
+            const orderForNotification = ordersWithSequence.find((order) => order.id === notification.orderId);
+            const customerVisitorId = notification.customerVisitorId || orderForNotification?.customerVisitorId || null;
+            const timestamp = notification.timestamp || notification.createdAt || orderForNotification?.createdAt || new Date().toISOString();
+            const hydrated = {
+              ...notification,
+              customerVisitorId,
+              timestamp,
+              createdAt: notification.createdAt || timestamp,
+            };
+            return reference ? { ...hydrated, orderReference: reference } : hydrated;
           })
         : [];
 
       const hydratedCustomerNotifications = Array.isArray(parsedOrderState.customerNotifications)
         ? parsedOrderState.customerNotifications.map((notification) => {
             const reference = notification.orderReference || orderReferenceMap.get(notification.orderId);
-            return reference ? { ...notification, orderReference: reference } : notification;
+            const orderForNotification = ordersWithSequence.find((order) => order.id === notification.orderId);
+            const customerVisitorId = notification.customerVisitorId || orderForNotification?.customerVisitorId || null;
+            const timestamp = notification.timestamp || notification.createdAt || orderForNotification?.createdAt || new Date().toISOString();
+            const hydrated = {
+              ...notification,
+              customerVisitorId,
+              timestamp,
+              createdAt: notification.createdAt || timestamp,
+            };
+            return reference ? { ...hydrated, orderReference: reference } : hydrated;
           })
         : [];
 
@@ -471,12 +535,12 @@ export function CartProvider({ children }) {
   const storeOrder = useCallback(
     (draft) => {
       const existingIds = new Set(state.orders.map((order) => order.id));
-      const orderRecord = createOrderRecord(draft, existingIds, state.nextOrderSequence);
+      const orderRecord = createOrderRecord(draft, existingIds, state.nextOrderSequence, currentVisitorId);
       const ownerNotification = createOwnerNotification(orderRecord);
       dispatch({ type: "STORE_ORDER", payload: { order: orderRecord, ownerNotification } });
       return orderRecord;
     },
-    [dispatch, state.nextOrderSequence, state.orders],
+    [currentVisitorId, dispatch, state.nextOrderSequence, state.orders],
   );
 
   const markOrderDelivered = useCallback(
@@ -512,19 +576,36 @@ export function CartProvider({ children }) {
   }, [state.items]);
 
   const notificationCounts = useMemo(() => {
-    const unread = state.ownerNotifications.filter((notification) => notification.status === "unread").length;
+    const unread = state.ownerNotifications.filter((notification) => {
+      const canViewNotification = currentVisitorId === OWNER_ID || notification.customerVisitorId === currentVisitorId;
+      return canViewNotification && notification.status === "unread";
+    }).length;
     return { unread };
-  }, [state.ownerNotifications]);
+  }, [currentVisitorId, state.ownerNotifications]);
+
+  const visibleOwnerNotifications = useMemo(() => {
+    return state.ownerNotifications.filter((notification) => {
+      return currentVisitorId === OWNER_ID || notification.customerVisitorId === currentVisitorId;
+    });
+  }, [currentVisitorId, state.ownerNotifications]);
+
+  const visibleCustomerNotifications = useMemo(() => {
+    return state.customerNotifications.filter((notification) => {
+      return currentVisitorId === OWNER_ID || notification.customerVisitorId === currentVisitorId;
+    });
+  }, [currentVisitorId, state.customerNotifications]);
 
   const value = useMemo(() => {
     return {
       items: state.items,
       orders: state.orders,
-      ownerNotifications: state.ownerNotifications,
-      customerNotifications: state.customerNotifications,
+      ownerNotifications: visibleOwnerNotifications,
+      customerNotifications: visibleCustomerNotifications,
       isCartOpen: state.isCartOpen,
       isNotificationsOpen: state.isNotificationsOpen,
       initialized: state.initialized,
+      currentVisitorId,
+      ownerId: OWNER_ID,
       addItem,
       removeItem,
       setQuantity,
@@ -545,7 +626,7 @@ export function CartProvider({ children }) {
       cartCount: summary.itemCount,
       ownerUnreadCount: notificationCounts.unread,
     };
-  }, [addItem, clearCart, closeCart, closeNotifications, markCustomerNotificationRead, markOrderDelivered, markOwnerNotificationsRead, openCart, openNotifications, removeItem, setQuantity, storeOrder, summary.delivery, summary.itemCount, summary.subtotal, summary.total, state.customerNotifications, state.initialized, state.isCartOpen, state.isNotificationsOpen, state.items, state.orders, state.ownerNotifications, toggleCart, toggleNotifications, notificationCounts.unread]);
+  }, [addItem, clearCart, closeCart, closeNotifications, currentVisitorId, markCustomerNotificationRead, markOrderDelivered, markOwnerNotificationsRead, notificationCounts.unread, openCart, openNotifications, removeItem, setQuantity, state.initialized, state.isCartOpen, state.isNotificationsOpen, state.items, state.orders, storeOrder, summary.delivery, summary.itemCount, summary.subtotal, summary.total, toggleCart, toggleNotifications, visibleCustomerNotifications, visibleOwnerNotifications]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

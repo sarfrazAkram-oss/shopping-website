@@ -595,6 +595,12 @@
 	font-size: 1.2rem;
 }
 
+.cart-item__meta {
+	margin: -0.25rem 0 0;
+	font-size: 0.86rem;
+	color: rgba(28, 26, 23, 0.62);
+}
+
 .cart-item__price {
 	color: rgba(28, 26, 23, 0.65);
 }

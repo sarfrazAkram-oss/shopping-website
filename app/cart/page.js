@@ -97,6 +97,8 @@ export default function CartPage() {
         name: item.name,
         price: item.price,
         quantity: item.quantity,
+        selectedSize: item.selectedSize || "",
+        selectedColor: item.selectedColor || "",
       })),
       totals: {
         subtotal,
@@ -165,6 +167,13 @@ export default function CartPage() {
               </div>
               <div className="cart-item__details">
                 <h2>{item.name}</h2>
+                {item.selectedSize || item.selectedColor ? (
+                  <p className="cart-item__meta">
+                    {item.selectedSize ? `Size ${item.selectedSize}` : ""}
+                    {item.selectedSize && item.selectedColor ? " • " : ""}
+                    {item.selectedColor ? `Color ${item.selectedColor}` : ""}
+                  </p>
+                ) : null}
                 <p className="cart-item__price">{formatPrice(item.price)}</p>
                 <div className="cart-item__controls">
                   <div className="cart-item__quantity" role="group" aria-label={`Adjust quantity for ${item.name}`}>

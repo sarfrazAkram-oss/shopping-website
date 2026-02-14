@@ -10,14 +10,18 @@ export default function NotificationsPanel() {
     closeNotifications,
     ownerNotifications,
     orders,
+    currentVisitorId,
+    ownerId,
     markOwnerNotificationsRead,
     markOrderDelivered,
   } = useCart();
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   const sortedOrders = useMemo(() => {
-    return [...orders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [orders]);
+    return [...orders]
+      .filter((order) => currentVisitorId === ownerId || order.customerVisitorId === currentVisitorId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [currentVisitorId, orders, ownerId]);
 
   const latestNotificationByOrder = useMemo(() => {
     const mapping = new Map();

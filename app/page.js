@@ -1,19 +1,22 @@
 import Link from "next/link";
 import ProductCard from "../components/ProductCard";
 
-const trendingProducts = [
+const trendingSneakers = [
   { name: "AirFly Prime", price: "$140", image: "/images/shoes/shoes1.jpg", action: "Add to Cart", category: "sneakers" },
-  { name: "Miraj Noir", price: "$195", image: "/images/perfumes/perfume5.jfif", action: "Shop Now", category: "perfumes" },
   { name: "Urban Stride", price: "$155", image: "/images/shoes/shoes2.jfif", action: "Add to Cart", category: "sneakers" },
-  { name: "Rosani Blush", price: "$205", image: "/images/perfumes/perfume4.webp", action: "Shop Now", category: "perfumes" },
   { name: "Velocity Edge", price: "$162", image: "/images/shoes/shoes4.jfif", action: "Add to Cart", category: "sneakers" },
-  { name: "Golden Aura", price: "$182", image: "/images/perfumes/perfume5.jfif", action: "Add to Cart", category: "perfumes" },
   { name: "Metro Glide", price: "$150", image: "/images/shoes/backgroud_pictures/men1.jpg", action: "Add to Cart", category: "sneakers" },
-  { name: "Ivory Musk", price: "$188", image: "/images/perfumes/perfumes.jpeg", action: "Shop Now", category: "perfumes" },
   { name: "Trail Luxe", price: "$158", image: "/images/shoes/backgroud_pictures/women2.jfif", action: "Add to Cart", category: "sneakers" },
-  { name: "Saffron Veil", price: "$176", image: "/images/perfumes/perfume4.webp", action: "Add to Cart", category: "perfumes" },
   { name: "Pulse Runner", price: "$168", image: "/images/shoes/backgroud_pictures/running1.jfif", action: "Add to Cart", category: "sneakers" },
-  { name: "Velvet Oud", price: "$210", image: "/images/perfumes/perfume5.jfif", action: "Shop Now", category: "perfumes" },
+  { name: "Prime Dash", price: "$164", image: "/images/shoes/shoes2.jfif", action: "Add to Cart", category: "sneakers" },
+  { name: "Street Sprint", price: "$159", image: "/images/shoes/shoes4.jfif", action: "Add to Cart", category: "sneakers" },
+];
+
+const trendingPerfumes = [
+  { name: "Miraj Noir", price: "$195", image: "/images/perfumes/perfume5.jfif", action: "Add to Cart", category: "perfumes" },
+  { name: "Rosani Blush", price: "$205", image: "/images/perfumes/perfume4.webp", action: "Add to Cart", category: "perfumes" },
+  { name: "Golden Aura", price: "$182", image: "/images/perfumes/perfume5.jfif", action: "Add to Cart", category: "perfumes" },
+  { name: "Ivory Musk", price: "$188", image: "/images/perfumes/perfumes.jpeg", action: "Add to Cart", category: "perfumes" },
 ];
 
 export default function HomePage() {
@@ -83,24 +86,43 @@ export default function HomePage() {
 
       <section className="trending" aria-labelledby="trending-heading">
         <h2 id="trending-heading">Trending Now</h2>
-        <div className="product-grid">
-          {trendingProducts.map((product) => (
-            <ProductCard
-              key={product.name}
-              product={product}
-              action={
-                product.action === "Add to Cart"
-                  ? { type: "cart", label: "Add to Cart" }
-                  : {
-                      type: "link",
-                      label: product.action,
-                      href: product.category === "perfumes" ? "/perfumes" : "/sneakers",
-                    }
-              }
-              fallbackImage={product.image}
-              source="home-trending"
-            />
-          ))}
+        <div className="trending-rows">
+          <div className="trending-rows__group" aria-label="Trending sneakers">
+            <div className="product-grid">
+              {trendingSneakers.map((product) => (
+                <ProductCard
+                  key={product.name}
+                  product={product}
+                  action={{ type: "cart", label: "Add to Cart" }}
+                  fallbackImage={product.image}
+                  source="home-trending"
+                />
+              ))}
+            </div>
+          </div>
+          <div className="trending-rows__group trending-rows__group--perfumes" aria-label="Trending perfumes">
+            <div className="product-grid">
+              {trendingPerfumes.map((product) => (
+                <ProductCard
+                  key={product.name}
+                  product={product}
+                  action={{ type: "cart", label: "Add to Cart" }}
+                  fallbackImage={product.image}
+                  source="home-trending"
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="trending-see-more" aria-label="Explore more products">
+          <Link href="/sneakers" className="btn btn-dark trending-see-more__button">
+            <span>See More Sneakers</span>
+            <span className="trending-see-more__arrow" aria-hidden="true">→</span>
+          </Link>
+          <Link href="/perfumes" className="btn btn-light trending-see-more__button">
+            <span>See More Perfumes</span>
+            <span className="trending-see-more__arrow" aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
 
